@@ -32,7 +32,7 @@ contract Registry {
         uint32 _origin,
         bytes32 _sender,
         bytes calldata _data
-    ) external payable onlyMailbox {
+    ) external payable {
         emit ReceivedMessage(_origin, _sender, msg.value, string(_data));
 
         address walletAddress = abi.decode(_data, (address));

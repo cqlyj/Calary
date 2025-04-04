@@ -10,7 +10,7 @@ contract ChainlinkRelayer is ILogAutomation {
     IMailbox public mailbox =
         IMailbox(payable(0x50da3B3907A08a24fe4999F4Dcf337E8dC7954bb));
     uint32 public destination = 137; // Polygon
-    address public recipient = 0xeb6421483320405DD5378518f3F16468af9C6e9b; // The address of the recipient on Polygon
+    address public recipient = 0x8371CA3C7aCB1002f2f940A3F30635623caa7590; // The address of the recipient on Polygon
 
     function checkLog(
         Log calldata log,
