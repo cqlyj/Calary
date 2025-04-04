@@ -12,3 +12,6 @@ deploy-registry:
 
 deploy-cv-layer:
 	@forge script script/DeployCVLayer.s.sol:DeployCVLayer --rpc-url $(CELO_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${CELO_API_KEY} -vvvv
+
+deploy-chainlink-relayer:
+	@forge script script/DeployChainlinkRelayer.s.sol:DeployChainlinkRelayer --rpc-url $(CELO_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${CELO_API_KEY} -vvvv
