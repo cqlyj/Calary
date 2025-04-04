@@ -1,0 +1,161 @@
+export const abi = [
+  {
+    type: "constructor",
+    inputs: [
+      {
+        name: "_identityVerificationHub",
+        type: "address",
+        internalType: "address",
+      },
+      {
+        name: "_scope",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "_attestationId",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "_olderThanEnabled",
+        type: "bool",
+        internalType: "bool",
+      },
+      {
+        name: "_olderThan",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      {
+        name: "_forbiddenCountriesEnabled",
+        type: "bool",
+        internalType: "bool",
+      },
+      {
+        name: "_forbiddenCountriesListPacked",
+        type: "uint256[4]",
+        internalType: "uint256[4]",
+      },
+      {
+        name: "_ofacEnabled",
+        type: "bool[3]",
+        internalType: "bool[3]",
+      },
+    ],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "destination",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "uint32",
+        internalType: "uint32",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "mailbox",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "contract IMailbox",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "recipient",
+    inputs: [],
+    outputs: [
+      {
+        name: "",
+        type: "address",
+        internalType: "address",
+      },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "verifySelfProof",
+    inputs: [
+      {
+        name: "proof",
+        type: "tuple",
+        internalType: "struct IVcAndDiscloseCircuitVerifier.VcAndDiscloseProof",
+        components: [
+          {
+            name: "a",
+            type: "uint256[2]",
+            internalType: "uint256[2]",
+          },
+          {
+            name: "b",
+            type: "uint256[2][2]",
+            internalType: "uint256[2][2]",
+          },
+          {
+            name: "c",
+            type: "uint256[2]",
+            internalType: "uint256[2]",
+          },
+          {
+            name: "pubSignals",
+            type: "uint256[21]",
+            internalType: "uint256[21]",
+          },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "event",
+    name: "UserIdentifierRegistered",
+    inputs: [
+      {
+        name: "registeredUserIdentifier",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "nullifier",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "error",
+    name: "InvalidAttestationId",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InvalidScope",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "InvalidUserIdentifier",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "RegisteredNullifier",
+    inputs: [],
+  },
+];
