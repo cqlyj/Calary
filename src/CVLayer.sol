@@ -7,17 +7,9 @@ import {IIdentityVerificationHubV1} from "@self/contracts/interfaces/IIdentityVe
 import {CircuitConstants} from "@self/contracts/constants/CircuitConstants.sol";
 import {Formatter} from "@self/contracts/libraries/Formatter.sol";
 import {CircuitAttributeHandler} from "@self/contracts/libraries/CircuitAttributeHandler.sol";
-import {IMailbox} from "@hyperlane/contracts/interfaces/IMailbox.sol";
-import {TypeCasts} from "@hyperlane/contracts/libs/TypeCasts.sol";
 
 contract CVLayer is SelfVerificationRoot {
     mapping(uint256 => uint256) internal _nullifiers;
-
-    // From Celo to Polygon
-    IMailbox public mailbox =
-        IMailbox(payable(0x50da3B3907A08a24fe4999F4Dcf337E8dC7954bb));
-    uint32 public destination = 137; // Polygon
-    address public recipient = 0xeb6421483320405DD5378518f3F16468af9C6e9b; // The address of the recipient on Polygon
 
     error RegisteredNullifier();
     error InvalidUserIdentifier();
@@ -26,6 +18,7 @@ contract CVLayer is SelfVerificationRoot {
         uint256 indexed registeredUserIdentifier,
         uint256 indexed nullifier
     );
+    event CrossChainMessageReady(address indexed userIdentifier);
 
     constructor(
         address _identityVerificationHub,
@@ -104,17 +97,22 @@ contract CVLayer is SelfVerificationRoot {
             CircuitConstants.VC_AND_DISCLOSE_USER_IDENTIFIER_INDEX
         ];
 
-        bytes memory body = abi.encode(address(uint160(result.userIdentifier)));
-        uint256 fee = mailbox.quoteDispatch(
-            destination,
-            TypeCasts.addressToBytes32(recipient),
-            body
-        );
-        mailbox.dispatch{value: fee}(
-            destination,
-            TypeCasts.addressToBytes32(recipient),
-            body
-        );
+        // This will cause a revert...
+
+        // bytes memory body = abi.encode(address(uint160(result.userIdentifier)));
+        // uint256 fee = mailbox.quoteDispatch(
+        //     destination,
+        //     TypeCasts.addressToBytes32(recipient),
+        //     body
+        // );
+        // mailbox.dispatch{value: fee}(
+        //     destination,
+        //     TypeCasts.addressToBytes32(recipient),
+        //     body
+        // );
+
+        // Use Chainlink automation here thus hyperlane will not revert
+        emit CrossChainMessageReady(address(uint160(result.userIdentifier)));
 
         emit UserIdentifierRegistered(
             proof.pubSignals[
