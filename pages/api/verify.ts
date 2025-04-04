@@ -21,7 +21,7 @@ export default async function handler(
       console.log("Public signals:", publicSignals);
 
       // Contract details
-      const contractAddress = "0xb9e6B05EC9c15E3a2898594AD8b81A177D664F46";
+      const contractAddress = "0x8371ca3c7acb1002f2f940a3f30635623caa7590";
 
       const address = await getUserIdentifier(publicSignals, "hex");
       console.log("Extracted address from verification result:", address);
