@@ -6,6 +6,7 @@ libs = ["lib"]
 remappings = [
     "@self/contracts/=lib/self/contracts/contracts/",
     '@hyperlane/contracts=lib/hyperlane-monorepo/solidity/contracts/',
+    "@openzeppelin-contracts/contracts/=lib/openzeppelin-contracts/contracts/",
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
