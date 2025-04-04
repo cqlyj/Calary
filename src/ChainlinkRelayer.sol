@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: SEE LICENSE IN LICENSE
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.28;
 
 import {ILogAutomation, Log} from "./interfaces/ILogAutomation.sol";
@@ -18,10 +18,12 @@ contract ChainlinkRelayer is ILogAutomation {
     ) external pure returns (bool upkeepNeeded, bytes memory performData) {
         upkeepNeeded = true;
         address verifiedAddress = bytes32ToAddress(log.topics[1]);
-        performData = abi.encode(verifiedAddress);
+        performData = abi.encodePacked(verifiedAddress);
     }
 
-    function performUpkeep(bytes calldata performData) external override {
+    function performUpkeep(
+        bytes calldata performData
+    ) external payable override {
         uint256 fee = mailbox.quoteDispatch(
             destination,
             TypeCasts.addressToBytes32(recipient),
@@ -36,5 +38,14 @@ contract ChainlinkRelayer is ILogAutomation {
 
     function bytes32ToAddress(bytes32 _address) public pure returns (address) {
         return address(uint160(uint256(_address)));
+    }
+
+    function getFee(bytes memory body) external view returns (uint256) {
+        return
+            mailbox.quoteDispatch(
+                destination,
+                TypeCasts.addressToBytes32(recipient),
+                body
+            );
     }
 }

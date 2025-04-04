@@ -18,5 +18,5 @@ interface ILogAutomation {
         bytes memory checkData
     ) external returns (bool upkeepNeeded, bytes memory performData);
 
-    function performUpkeep(bytes calldata performData) external;
+    function performUpkeep(bytes calldata performData) external payable;
 }
