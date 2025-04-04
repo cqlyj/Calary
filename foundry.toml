@@ -7,6 +7,8 @@ remappings = [
     "@self/contracts/=lib/self/contracts/contracts/",
     '@hyperlane/contracts=lib/hyperlane-monorepo/solidity/contracts/',
     "@openzeppelin-contracts/contracts/=lib/openzeppelin-contracts/contracts/",
+      "@openzeppelin/uniswap-hooks/=lib/uniswap-hooks/",
+    "@v4-periphery/=lib/v4-periphery/",
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
