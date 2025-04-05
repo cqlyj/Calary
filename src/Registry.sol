@@ -35,8 +35,11 @@ contract Registry {
     ) external payable {
         emit ReceivedMessage(_origin, _sender, msg.value, string(_data));
 
-        address walletAddress = abi.decode(_data, (address));
-        uint256 deadline = block.timestamp + 365 days; // 1 year validity from now
+        (address walletAddress, uint256 expiryTimeStamp) = abi.decode(
+            _data,
+            (address, uint256)
+        );
+        uint256 deadline = expiryTimeStamp;
 
         verifiedAddresses[walletAddress] = VerifiedUser(
             walletAddress,
