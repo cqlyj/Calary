@@ -51,10 +51,10 @@ contract CalaryHook is BaseHook {
     }
 
     function beforeSwap(
-        address sender,
+        address /*sender*/, // it's not the swapper!!
         PoolKey calldata /*key*/,
         IPoolManager.SwapParams calldata /*params*/,
-        bytes calldata /*hookData*/
+        bytes calldata hookData
     )
         external
         view
@@ -62,7 +62,8 @@ contract CalaryHook is BaseHook {
         onlyPoolManager
         returns (bytes4, BeforeSwapDelta, uint24)
     {
-        if (IRegistry(registry).checkValidity(sender) == false) {
+        address swapper = abi.decode(hookData, (address));
+        if (IRegistry(registry).checkValidity(swapper) == false) {
             revert CalaryHook__NotVerified();
         }
         return (
@@ -73,18 +74,19 @@ contract CalaryHook is BaseHook {
     }
 
     function afterSwap(
-        address sender,
+        address /*sender*/,
         PoolKey calldata /*key*/,
         IPoolManager.SwapParams calldata params,
         BalanceDelta /*delta*/,
-        bytes calldata /*hookData*/
+        bytes calldata hookData
     ) external override onlyPoolManager returns (bytes4, int128) {
-        if (IRegistry(registry).checkRewardStatus(sender)) {
+        address swapper = abi.decode(hookData, (address));
+        if (IRegistry(registry).checkRewardStatus(swapper)) {
             // mint and switch the reward status
             // So that bad users cannot swap to mint multiple times
             int256 amount = params.amountSpecified;
-            calaryToken.mint(sender, uint256(amount));
-            IRegistry(registry).switchRewardStatus(sender);
+            calaryToken.mint(swapper, uint256(amount));
+            IRegistry(registry).switchRewardStatus(swapper);
         }
 
         return (BaseHook.afterSwap.selector, 0);
