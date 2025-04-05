@@ -18,7 +18,8 @@ contract ChainlinkRelayer is ILogAutomation {
     ) external pure returns (bool upkeepNeeded, bytes memory performData) {
         upkeepNeeded = true;
         address verifiedAddress = bytes32ToAddress(log.topics[1]);
-        performData = abi.encodePacked(verifiedAddress);
+        uint256 expiryTimeStamp = uint256(log.topics[2]);
+        performData = abi.encodePacked(verifiedAddress, expiryTimeStamp);
     }
 
     function performUpkeep(
