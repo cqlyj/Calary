@@ -55,3 +55,6 @@ create-pool-and-add-liquidity:
 
 swap:
 	@forge script script/actions/Swap.s.sol:Swap --rpc-url $(SEPOLIA_RPC_URL) --private-key ${PRIVATE_KEY} --broadcast -vvvv
+
+add-liquidity:
+	@forge script script/actions/AddLiquidity.s.sol:AddLiquidity --rpc-url $(SEPOLIA_RPC_URL) --private-key ${PRIVATE_KEY} --broadcast -vvvv
