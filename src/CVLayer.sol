@@ -141,7 +141,7 @@ contract CVLayer is SelfVerificationRoot {
         bytes memory dateBytes = bytes(expirationDate);
         bytes memory dayBytes = new bytes(2);
         bytes memory monthBytes = new bytes(2);
-        bytes memory yearBytes = new bytes(4);
+        bytes memory yearBytes = new bytes(2);
 
         dayBytes[0] = dateBytes[0];
         dayBytes[1] = dateBytes[1];
@@ -149,11 +149,9 @@ contract CVLayer is SelfVerificationRoot {
         monthBytes[1] = dateBytes[4];
         yearBytes[0] = dateBytes[6];
         yearBytes[1] = dateBytes[7];
-        yearBytes[2] = dateBytes[8];
-        yearBytes[3] = dateBytes[9];
 
         string memory expirationDateString = string(
-            abi.encodePacked(dayBytes, monthBytes, yearBytes)
+            abi.encodePacked(yearBytes, monthBytes, dayBytes)
         );
 
         uint256 expiryDateInTimestamp = Formatter.dateToUnixTimestamp(
