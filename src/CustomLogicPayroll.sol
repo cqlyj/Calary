@@ -24,7 +24,7 @@ contract CustomLogicPayroll is Ownable {
 
     address[] private s_allowedTokens;
     IERC20 private immutable i_usdc =
-        IERC20(0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359); // Polygon USDC with 6 decimals
+        IERC20(0xeffD7ac3073F3e4122e31fF18F9Ae69A4a595dFE); // Polygon USDC with 6 decimals
     mapping(uint256 employeeId => Employee) private s_idToEmployee;
     mapping(uint256 employeeId => Preference) private s_idToPreference;
     mapping(address connectedWallet => uint256 employeeId)
