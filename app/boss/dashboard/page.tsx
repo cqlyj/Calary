@@ -20,8 +20,8 @@ const BossDashboard: React.FC = () => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const contractAddress = "0xB1Ccfc014e8e692FB0a4a63514f75eCc5cb0E24B"; // Replace with actual deployed payroll contract address
-      const usdcAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"; // USDC contract address
+      const contractAddress = "0xA1e75a92E6A2E95c1155A184b86F2164BE811A9A"; // Replace with actual deployed payroll contract address
+      const usdcAddress = "0xeffD7ac3073F3e4122e31fF18F9Ae69A4a595dFE"; // USDC contract address
       const abi = [
         {
           type: "function",
@@ -71,9 +71,7 @@ const BossDashboard: React.FC = () => {
       console.log("USDC approval completed");
 
       // Send the deposit transaction to the payroll contract
-      const tx = await contract.depositFunds(parsedAmount, {
-        gasLimit: 5000000, // Adjust gas limit as needed
-      });
+      const tx = await contract.depositFunds(parsedAmount);
 
       await tx.wait();
       console.log("Funds deposited successfully");
@@ -101,7 +99,7 @@ const BossDashboard: React.FC = () => {
       // Set up provider and signer
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const contractAddress = "0xEc09534D989B7402a9D8f2Ef9433C8156dCE35Bf"; // Replace with actual deployed contract address
+      const contractAddress = "0xA1e75a92E6A2E95c1155A184b86F2164BE811A9A"; // Replace with actual deployed contract address
       const abi = [
         {
           type: "function",
@@ -169,7 +167,7 @@ const BossDashboard: React.FC = () => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const contractAddress = "0xEc09534D989B7402a9D8f2Ef9433C8156dCE35Bf"; // Replace with actual deployed contract address
+      const contractAddress = "0xA1e75a92E6A2E95c1155A184b86F2164BE811A9A"; // Replace with actual deployed contract address
       const abi = [
         {
           type: "function",
