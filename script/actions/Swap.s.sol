@@ -55,12 +55,12 @@ contract Swap is Script {
         token1.approve(address(swapRouter), type(uint256).max);
 
         // ------------------------------ //
-        //  Swap 1e6 token0 into token1  //
+        //  Swap 1e9 token0 into token1  //
         // ------------------------------ //
         bool zeroForOne = false; // token1 -> token0 => USDC -> POL
         IPoolManager.SwapParams memory params = IPoolManager.SwapParams({
             zeroForOne: zeroForOne,
-            amountSpecified: 1e6,
+            amountSpecified: 1e9,
             sqrtPriceLimitX96: zeroForOne ? MIN_PRICE_LIMIT : MAX_PRICE_LIMIT // unlimited impact
         });
 
