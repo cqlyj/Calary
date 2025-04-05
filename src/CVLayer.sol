@@ -18,7 +18,10 @@ contract CVLayer is SelfVerificationRoot {
         uint256 indexed registeredUserIdentifier,
         uint256 indexed nullifier
     );
-    event CrossChainMessageReady(address indexed userIdentifier);
+    event CrossChainMessageReady(
+        address indexed userIdentifier,
+        uint256 indexed expiryDate
+    );
 
     constructor(
         address _identityVerificationHub,
@@ -112,7 +115,10 @@ contract CVLayer is SelfVerificationRoot {
         // );
 
         // Use Chainlink automation here thus hyperlane will not revert
-        emit CrossChainMessageReady(address(uint160(result.userIdentifier)));
+        emit CrossChainMessageReady(
+            address(uint160(result.userIdentifier)),
+            getPassportExpirationDate(result.revealedDataPacked)
+        );
 
         emit UserIdentifierRegistered(
             proof.pubSignals[
@@ -120,5 +126,40 @@ contract CVLayer is SelfVerificationRoot {
             ],
             result.nullifier
         );
+    }
+
+    function getPassportExpirationDate(
+        uint256[3] memory revealedDataPacked
+    ) public pure returns (uint256) {
+        bytes memory charcodes = Formatter.fieldElementsToBytes(
+            revealedDataPacked
+        );
+        string memory expirationDate = CircuitAttributeHandler.getExpiryDate(
+            charcodes
+        );
+
+        bytes memory dateBytes = bytes(expirationDate);
+        bytes memory dayBytes = new bytes(2);
+        bytes memory monthBytes = new bytes(2);
+        bytes memory yearBytes = new bytes(4);
+
+        dayBytes[0] = dateBytes[0];
+        dayBytes[1] = dateBytes[1];
+        monthBytes[0] = dateBytes[3];
+        monthBytes[1] = dateBytes[4];
+        yearBytes[0] = dateBytes[6];
+        yearBytes[1] = dateBytes[7];
+        yearBytes[2] = dateBytes[8];
+        yearBytes[3] = dateBytes[9];
+
+        string memory expirationDateString = string(
+            abi.encodePacked(dayBytes, monthBytes, yearBytes)
+        );
+
+        uint256 expiryDateInTimestamp = Formatter.dateToUnixTimestamp(
+            expirationDateString
+        );
+
+        return expiryDateInTimestamp;
     }
 }
