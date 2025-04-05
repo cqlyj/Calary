@@ -13,6 +13,8 @@ Calary integrates with **Flow** in two key areas:
 
 Both Flow integrations were achieved using Flow’s **EVM compatibility layer**, allowing seamless interaction with existing Ethereum-style smart contracts and development tools.
 
+Check more about Calary as a developer toolkit [here](developer-toolkit.md).
+
 ### Team & Social Handles
 
 This project was developed by a solo blockchain developer focused on smart contract development and ecosystem integration.
