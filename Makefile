@@ -49,3 +49,6 @@ deploy-milestone-based-payroll:
 
 add-address-to-easy-registry:
 	@forge script script/actions/AddAddressToEasyRegistry.s.sol:AddAddressToEasyRegistry --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
+create-pool-and-add-liquidity:
+	@forge script script/actions/CreatePoolAndAddLiquidity.s.sol:CreatePoolAndAddLiquidity --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast -vvvv
