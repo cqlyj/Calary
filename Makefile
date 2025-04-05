@@ -20,3 +20,12 @@ deploy-chainlink-relayer:
 
 deploy-demo-registry:
 	@forge script script/DeployRegistry.s.sol:DeployRegistry --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
+deploy-mock-usdc:
+	@forge script script/mocks/DeployMockUSDC.s.sol:DeployMockUSDC --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
+deploy-mock-pol:
+	@forge script script/mocks/DeployMockPOL.s.sol:DeployMockPOL --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
+deploy-calary:
+	@forge script script/mocks/DeployCalary.s.sol:DeployCalary --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
