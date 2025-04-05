@@ -28,6 +28,8 @@ This project was developed by a solo blockchain developer focused on smart contr
 
 Calary leverages **Uniswap v4 Hooks** as a core component to provide a compliance-driven, reward-based swap system. The integration optimizes the swap functionality, ensuring that only verified and compliant users participate in the swap ecosystem. It also includes reward mechanisms, where users are incentivized with Calary tokens after completing a compliant swap, reinforcing the system’s compliance framework and ensuring payroll participants are rewarded.
 
+For more use cases, check [here](./developer-toolkit.md#uniswap-v4-hooks).
+
 ### Uniswap v4 Hooks Integration
 
 Calary uses **two custom hooks**—`beforeSwap` and `afterSwap`—to enforce compliance and trigger reward mechanisms:
