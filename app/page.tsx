@@ -16,7 +16,7 @@ const Calary: React.FC = () => {
       ? new SelfAppBuilder({
           appName: "Calary",
           scope: "Calary-Payroll",
-          endpoint: "https://3738-111-235-226-130.ngrok-free.app/api/verify",
+          endpoint: "https://27ad-111-235-226-130.ngrok-free.app/api/verify",
           userId: walletAddress,
           userIdType: "hex",
           disclosures: {
