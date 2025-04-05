@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { ethers } from "ethers";
 
 const DashboardPage: React.FC = () => {
-  const [selectedToken] = useState<string | null>(null);
   const [employeeId, setEmployeeId] = useState<number | string>("");
   const [employeeWallet, setEmployeeWallet] = useState<string>("");
   const [salaryAmount, setSalaryAmount] = useState<string>("");
@@ -13,7 +12,7 @@ const DashboardPage: React.FC = () => {
 
   // Add Employee Handler (Milestone-based)
   const handleAddEmployee = async () => {
-    if (!employeeId || !employeeWallet || !salaryAmount || !selectedToken) {
+    if (!employeeId || !employeeWallet || !salaryAmount) {
       console.error("Please fill all fields.");
       return;
     }
@@ -24,7 +23,7 @@ const DashboardPage: React.FC = () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
-      const contractAddress = "0xB1Ccfc014e8e692FB0a4a63514f75eCc5cb0E24B"; // Replace with actual deployed payroll contract address
+      const contractAddress = "0xC2DE88AA4Ea330B4589C7e77BD5b99C6cc33D00b"; // Replace with actual deployed payroll contract address
       const abi = [
         {
           type: "function",
@@ -74,7 +73,28 @@ const DashboardPage: React.FC = () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
-      const contractAddress = "0xB1Ccfc014e8e692FB0a4a63514f75eCc5cb0E24B"; // Replace with actual deployed payroll contract address
+      const contractAddress = "0xC2DE88AA4Ea330B4589C7e77BD5b99C6cc33D00b"; // Replace with actual deployed payroll contract address
+      const usdcAddress = "0xeffD7ac3073F3e4122e31fF18F9Ae69A4a595dFE"; // USDC contract address
+
+      const usdcAbi = [
+        {
+          type: "function",
+          name: "approve",
+          inputs: [
+            {
+              name: "spender",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+        },
+      ];
+
       const abi = [
         {
           type: "function",
@@ -86,12 +106,23 @@ const DashboardPage: React.FC = () => {
               internalType: "uint256",
             },
           ],
+          outputs: [],
           stateMutability: "payable",
         },
       ];
 
+      const usdcContract = new ethers.Contract(usdcAddress, usdcAbi, signer);
       const contract = new ethers.Contract(contractAddress, abi, signer);
-      const tx = await contract.depositFunds(ethers.parseUnits(amount, 6)); // Assuming USDC has 6 decimals
+      const parsedAmount = ethers.parseUnits(amount, 6);
+
+      const txApproval = await usdcContract.approve(
+        contractAddress,
+        parsedAmount
+      );
+      await txApproval.wait();
+      console.log("USDC approval completed");
+
+      const tx = await contract.depositFunds(parsedAmount); // Assuming USDC has 6 decimals
 
       await tx.wait();
       console.log("Funds deposited successfully");
@@ -111,7 +142,7 @@ const DashboardPage: React.FC = () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
-      const contractAddress = "0xB1Ccfc014e8e692FB0a4a63514f75eCc5cb0E24B"; // Replace with actual deployed payroll contract address
+      const contractAddress = "0xC2DE88AA4Ea330B4589C7e77BD5b99C6cc33D00b"; // Replace with actual deployed payroll contract address
       const abi = [
         {
           type: "function",
