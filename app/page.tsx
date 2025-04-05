@@ -42,7 +42,8 @@ const Calary: React.FC = () => {
             Welcome to Calary
           </h1>
           <p className="text-gray-600">
-            A compliance-supported payroll system infrastructure.
+            Compliance toolkit empowering killer consumer dApps with on-chain
+            payroll, swaps & rewards.
           </p>
         </div>
 
