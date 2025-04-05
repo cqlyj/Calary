@@ -1,57 +1,23 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import SelfQRcodeWrapper, { SelfApp, SelfAppBuilder } from "@selfxyz/qrcode";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ethers } from "ethers";
+import { SelfApp, SelfAppBuilder } from "@selfxyz/qrcode";
+import SelfQRcodeWrapper from "@selfxyz/qrcode";
+import useWallet from "@/hooks/useWallet";
 
 const Calary: React.FC = () => {
-  const [input, setInput] = useState<string>("");
-  const [address, setAddress] = useState<string | null>(null);
-  const [ensName, setEnsName] = useState<string | null>(null);
+  const { walletAddress, connectWallet, disconnectWallet } = useWallet();
   const [role, setRole] = useState<"boss" | "worker" | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const resolveEns = async () => {
-      if (!input) return;
-
-      try {
-        const provider = new ethers.JsonRpcProvider(
-          "https://eth-mainnet.g.alchemy.com/v2/zSlV7xFXjWsJeV7s2GNF8iVAban_r3-b"
-        );
-
-        if (input.toLowerCase().endsWith(".eth")) {
-          const resolvedAddress = await provider.resolveName(input);
-          if (resolvedAddress) {
-            setAddress(resolvedAddress);
-            setEnsName(input);
-          }
-        } else if (ethers.isAddress(input)) {
-          const resolvedName = await provider.lookupAddress(input);
-          setAddress(input);
-          setEnsName(resolvedName);
-        } else {
-          setAddress(null);
-          setEnsName(null);
-        }
-      } catch (error) {
-        console.error("Error resolving ENS:", error);
-        setAddress(null);
-        setEnsName(null);
-      }
-    };
-
-    resolveEns();
-  }, [input]);
-
   const selfApp =
-    address && role
+    walletAddress && role
       ? new SelfAppBuilder({
           appName: "Calary",
           scope: "Calary-Payroll",
           endpoint: "https://3738-111-235-226-130.ngrok-free.app/api/verify",
-          userId: address,
+          userId: walletAddress,
           userIdType: "hex",
           disclosures: {
             nationality: true,
@@ -65,64 +31,77 @@ const Calary: React.FC = () => {
 
   const handleSuccess = () => {
     console.log("Verification successful");
-    if (role === "boss") {
-      router.push("/boss");
-    } else {
-      router.push("/worker");
-    }
+    router.push(`/${role}`);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white text-black p-6">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
-        Welcome to Calary
-      </h2>
-      <p className="text-center text-gray-700 mb-6">
-        A compliance-supported payroll system infrastructure.
-      </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 p-6">
+      <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Welcome to Calary
+          </h1>
+          <p className="text-gray-600">
+            A compliance-supported payroll system infrastructure.
+          </p>
+        </div>
 
-      {!role ? (
-        <div className="flex space-x-4">
-          <button
-            onClick={() => setRole("boss")}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Boss
-          </button>
-          <button
-            onClick={() => setRole("worker")}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Worker
-          </button>
-        </div>
-      ) : (
-        <div className="w-full max-w-md bg-gray-100 p-4 rounded shadow mt-6">
-          <label className="block text-sm font-medium mb-2">
-            Enter your wallet address or ENS:
-          </label>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="0x... or name.eth"
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-          {ensName && ensName !== address && (
-            <p className="mt-2 text-sm text-gray-600">✓ Resolved: {ensName}</p>
-          )}
-        </div>
-      )}
+        {!role ? (
+          <div className="flex justify-center space-x-6">
+            <button
+              onClick={() => setRole("boss")}
+              className="px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+            >
+              I&apos;m a Boss
+            </button>
+            <button
+              onClick={() => setRole("worker")}
+              className="px-6 py-3 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
+            >
+              I&apos;m a Worker
+            </button>
+          </div>
+        ) : (
+          <div className="text-center">
+            {!walletAddress ? (
+              <button
+                onClick={connectWallet}
+                className="mt-4 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+              >
+                Connect Wallet
+              </button>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-gray-700">
+                  Connected as:{" "}
+                  <span className="font-mono">{walletAddress}</span>
+                </p>
+                <button
+                  onClick={disconnectWallet}
+                  className="px-5 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                >
+                  Disconnect
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
-      {address && selfApp && (
-        <div className="mt-6">
-          <SelfQRcodeWrapper
-            selfApp={selfApp}
-            type="websocket"
-            onSuccess={handleSuccess}
-          />
-        </div>
-      )}
+        {walletAddress && selfApp && (
+          <div className="pt-6 border-t border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2 text-center">
+              Verify your identity
+            </h3>
+            <div className="flex justify-center">
+              <SelfQRcodeWrapper
+                selfApp={selfApp}
+                type="websocket"
+                onSuccess={handleSuccess}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
