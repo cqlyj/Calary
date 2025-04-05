@@ -548,6 +548,8 @@ const EmployeePage: React.FC = () => {
   const [selectedTokens, setSelectedTokens] = useState<string[]>([]);
   const [percentages, setPercentages] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showSwapModal, setShowSwapModal] = useState(false);
+  const [tokenReceived, setTokenReceived] = useState(false);
 
   const getEmployeeId = async () => {
     if (!walletAddress || !window.ethereum) return;
@@ -631,10 +633,39 @@ const EmployeePage: React.FC = () => {
       );
       await contract.claimPayroll(employeeId);
       console.log("Payroll claimed successfully");
+
+      // 🔄 Simulate waiting for token receipt (in real life you'd query token balance)
+      setTimeout(() => {
+        setTokenReceived(true);
+        setShowSwapModal(true); // only show if token is confirmed received
+        console.log("Token received successfully!");
+      }, 8000); // Fake 6 second wait
     } catch (err) {
       console.error("Error claiming payroll:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSwapNowClick = async () => {
+    setShowSwapModal(false);
+    console.log("🚀 Initiating swap via Forge...");
+
+    try {
+      const response = await fetch("/api/run-swap", { method: "POST" });
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Forge output:", result.output);
+        alert(
+          "✅ Swap completed via Forge! Tokens should be in your wallet now."
+        );
+      } else {
+        throw new Error(result.error || "Unknown error");
+      }
+    } catch (err) {
+      console.error("Failed to run swap command:", err);
+      alert("❌ Swap failed 😢. Please try again.");
     }
   };
 
@@ -751,6 +782,36 @@ const EmployeePage: React.FC = () => {
             {loading ? "Claiming..." : "Claim Payroll"}
           </button>
         </div>
+        {showSwapModal && tokenReceived && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white rounded-xl p-8 shadow-2xl max-w-md w-full">
+              <h2 className="text-2xl font-bold mb-4 text-center text-purple-700">
+                🎉 Salary Claimed!
+              </h2>
+              <p className="mb-6 text-center text-gray-700">
+                You’re about to swap <strong>1000 USDC</strong> to POL
+              </p>
+              <p className="text-lg text-center text-blue-600 font-semibold mb-6">
+                Estimated Output: <span className="text-2xl">5280 POL</span>
+                <br />@ Rate: <code>5.28 POL / USDC</code>
+              </p>
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={handleSwapNowClick}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  Swap Now
+                </button>
+                <button
+                  onClick={() => setShowSwapModal(false)}
+                  className="px-6 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-100"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
