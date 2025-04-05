@@ -29,3 +29,9 @@ deploy-mock-pol:
 
 deploy-calary:
 	@forge script script/mocks/DeployCalary.s.sol:DeployCalary --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
+deploy-easy-registry:
+	@forge script script/mocks/DeployEasyRegistry.s.sol:DeployEasyRegistry --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
+deploy-time-based-payroll:
+	@forge script script/mocks/DeployTimeBasedPayroll.s.sol:DeployTimeBasedPayroll --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
