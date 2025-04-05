@@ -29,6 +29,8 @@ contract MilestoneBasedPayroll is Ownable {
         private s_walletToEmployeeId;
     uint256 private constant PERCENTAGE = 100;
     address registry;
+    address public milestoneContract;
+    bytes public eventSignature;
 
     event EmployeeAdded(
         uint256 indexed employeeId,
@@ -83,11 +85,15 @@ contract MilestoneBasedPayroll is Ownable {
         address owner,
         address[] memory allowedTokens,
         address _registry,
-        address _gasMaster
+        address _gasMaster,
+        address _milestoneContract,
+        bytes memory _eventSignature
     ) Ownable(owner) {
         s_allowedTokens = allowedTokens;
         registry = _registry;
         gasMaster = _gasMaster;
+        milestoneContract = _milestoneContract;
+        eventSignature = _eventSignature;
     }
 
     /*//////////////////////////////////////////////////////////////
