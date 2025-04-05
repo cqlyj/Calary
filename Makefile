@@ -39,6 +39,9 @@ deploy-time-based-payroll:
 deploy-calary-hook:
 	@forge script script/mocks/DeployCalaryHook.s.sol:DeployCalaryHook --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
 
+deploy-custom-logic-payroll:
+	@forge script script/mocks/DeployCustomLogicPayroll.s.sol:DeployCustomLogicPayroll --rpc-url $(SEPOLIA_RPC_URL) --account burner --sender 0xFB6a372F2F51a002b390D18693075157A459641F --broadcast --verify --etherscan-api-key ${ETHERSCAN_API_KEY} -vvvv
+
 #################################
 
 add-address-to-easy-registry:
