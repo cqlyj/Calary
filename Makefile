@@ -2,7 +2,7 @@
 
 all : install build
 
-build :; @forge build && forge inspect src/CVLayer.sol:CVLayer abi > content/CVLayer.json && forge inspect src/TimeBasedPayroll.sol:TimeBasedPayroll abi > content/time-based/TimeBasedPayroll.json && forge inspect src/TimeBasedPayroll.sol:TimeBasedPayroll bytecode > content/time-based/TimeBasedPayroll.bin
+build :; @forge build && forge inspect src/CVLayer.sol:CVLayer abi > content/CVLayer.json && forge inspect src/TimeBasedPayroll.sol:TimeBasedPayroll abi > content/time-based/TimeBasedPayroll.json && forge inspect src/TimeBasedPayroll.sol:TimeBasedPayroll bytecode > content/time-based/TimeBasedPayroll.bin && forge inspect src/CustomLogicPayroll.sol:CustomLogicPayroll abi > content/custom-logic/CustomLogicPayroll.json && forge inspect src/CustomLogicPayroll.sol:CustomLogicPayroll bytecode > content/custom-logic/CustomLogicPayroll.bin 
 
 install:
 	@forge install selfxyz/self --no-commit && forge install hyperlane-xyz/hyperlane-monorepo@bdccf29ee387dc671c3b42383cb5cdf1bd6689f3 --no-commit && forge install OpenZeppelin/openzeppelin-contracts --no-commit && forge install OpenZeppelin/uniswap-hooks --no-commit && forge install Uniswap/v4-periphery --no-commit
